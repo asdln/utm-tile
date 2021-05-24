@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "api.h"
+#include "CJsonObject.hpp"
 
 int main(int args, char** argv)
 {
@@ -13,8 +14,29 @@ int main(int args, char** argv)
     {
         exe_path = exe_path.substr(0, pos);
     }
+    else
+    {
+        pos = exe_path.rfind("\\");
+		if (pos != std::string::npos)
+		{
+			exe_path = exe_path.substr(0, pos);
+		}
+    }
 
-    make_tile(/*exe_path*/"D:/test/shp", "D:/test/GF1_WFV2_E111.1_N34.3_20200503_L1A0004778986/GF1_WFV2_E111.1_N34.3_20200503_L1A0004778986.tiff", "d:/test/make_tile_dir");
+    std::string argparam;
+    std::getline(std::cin, argparam);
+
+    neb::CJsonObject oJson(argparam);
+
+    std::string input_img_file;
+    oJson.Get("input_img_file", input_img_file);
+
+    std::string output_path;
+	oJson.Get("output_path", output_path);
+    
+    //make_tile(exe_path + "/shp", "D:/test/GF1C_PMS_E112.2_N35.2_20190407_L1A1021393821/GF1C_PMS_E112.2_N35.2_20190407_L1A1021393821-MUX_approo.tif", "d:/test/make_tile_dir");
+    //make_tile(exe_path + "/shp", "D:/test/GF1_WFV2_E111.1_N34.3_20200503_L1A0004778986/GF1_WFV2_E111.1_N34.3_20200503_L1A0004778986.tiff", "d:/test/make_tile_dir");
+    make_tile(exe_path + "/shp", input_img_file, output_path);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
